@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b970412e1930e8e4889b0ce820d130b5, type: 3}
+  m_Name: LevelData_4X4
+  m_EditorClassIdentifier: 
+  levelName: 4X4
+  gridSize: {x: 4, y: 4}
+  cellSize: {x: 150, y: 100}
+  spacing: {x: 13, y: 13}
+  fixedColumnCount: 4
+  emptyCellIndexes: 
