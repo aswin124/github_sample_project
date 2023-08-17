@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: AudioData
   m_EditorClassIdentifier: 
   cardFlip: {fileID: 0}
-  combinationSucess: {fileID: 0}
-  combinationError: {fileID: 0}
-  gameWin: {fileID: 0}
-  bgMusic: {fileID: 0}
-  buttonClick: {fileID: 0}
+  combinationSucess: {fileID: 8300000, guid: 49191880e3c2f4944a40cec9e6d6b832, type: 3}
+  combinationError: {fileID: 8300000, guid: f173e4bd2a4bf914c8f1240c48f1c9c5, type: 3}
+  gameWin: {fileID: 8300000, guid: 3a6453bcaf38aba469cb0c9f42cb9b19, type: 3}
+  bgMusic: {fileID: 8300000, guid: 3aa3082ff01e10c4591192e69a1c2aa1, type: 3}
+  buttonClick: {fileID: 8300000, guid: b2102d4b98303ff4d9ce11866e94e8e6, type: 3}

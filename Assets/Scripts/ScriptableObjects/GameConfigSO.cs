@@ -31,6 +31,17 @@ namespace Card.Data
         {
             get { return levels; }
         }
-        //Audio SO
+
+        [SerializeField] private AudioData audios;
+        public AudioData Audios
+        {
+            get { return audios; }
+        }
+
+        [SerializeField] private List<CardThemeSO> themes;
+        public List<CardThemeSO> Themes
+        {
+            get { return themes; }
+        }
     }
 }
