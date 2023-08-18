@@ -9,7 +9,6 @@ namespace Card
         Initialize,
         MainMenu,
         GamePlay,
-        GameResult
     }
 
     public enum MainMenuState
@@ -17,5 +16,24 @@ namespace Card
         Initialize,
         Idle,
         End 
+    }
+
+    public enum GamePlayState
+    {
+        NewGame,
+        OldGame,
+        StupUI,
+        CardReveal,
+        Playing,
+        GameResult,
+    }
+
+    public enum SfxType
+    {
+        ButtonClick,
+        CardFlip,
+        CardPaired,
+        CardNotPAired,
+        GameWin,
     }
 }

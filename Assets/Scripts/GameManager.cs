@@ -16,8 +16,10 @@ namespace Card
 
         [SerializeField] private MainMenuHandler menuHandler;
         [SerializeField] private AudioManager audioManager;
+        [SerializeField] private GamePlayHandler playHandler;
 
         private GameState m_gameState;
+        private GameData m_gameData;
 
         #endregion
 
@@ -39,13 +41,12 @@ namespace Card
 
         #endregion
 
-        #region Public Methods
-
+        #region Private Methods
         /// <summary>
         /// Updates the game state to specified one, and carried out the funtionalities of that state
         /// </summary>
         /// <param name="_gameState"></param>
-        public void UpdateState(GameState _gameState)
+        private void UpdateState(GameState _gameState)
         {
             m_gameState = _gameState;
 
@@ -54,20 +55,18 @@ namespace Card
                 case GameState.Initialize:
                     InitializeTheGame();
                     break;
+
                 case GameState.MainMenu:
                     ShowMainMenu();
                     break;
+
                 case GameState.GamePlay:
-                    break;
-                case GameState.GameResult:
+                    StartGame();
                     break;
             }
 
         }
 
-        #endregion
-
-        #region Private Methods
         /// <summary>
         /// Load the saved data from memory and setup the game
         /// </summary>
@@ -77,21 +76,16 @@ namespace Card
             audioManager.Initiaze();
             audioManager.PlayBgMusic(gameConfig.Audios.BgMusic);
 
+            //Intialize game data
+            m_gameData = new GameData();
+
             menuHandler.LevelSelected += OnGameLevelSelected;
+            playHandler.PlaySfxAudio += PlaySfx;
+            playHandler.SaveGameData += SaveGameData;
             //Try to fetch the local data from memory
             //If the data  is not avilable, then initialize a new load/save class
             UpdateState(GameState.MainMenu);
-        }
-
-
-        /// <summary>
-        /// Invokes when a level is selected.
-        /// </summary>
-        /// <param name="_levelIndex"></param>
-        private void OnGameLevelSelected(int _levelIndex)
-        {
-            audioManager.PlaySfx(gameConfig.Audios.ButtonClick);
-        }
+        }        
 
         /// <summary>
         /// Display mein Menu screen
@@ -102,17 +96,50 @@ namespace Card
         }
 
         /// <summary>
-        /// Start The Game
+        /// Invokes when a level is selected.
         /// </summary>
-        private void StartGame(string selectedLevel)
+        /// <param name="_levelIndex"></param>
+        private void OnGameLevelSelected(int _levelIndex)
         {
-
+            //Set level index
+            m_gameData.levelIndex = _levelIndex;
+            audioManager.PlaySfx(gameConfig.Audios.ButtonClick);
+            //Move to next state
+            UpdateState(GameState.GamePlay);
         }
 
         /// <summary>
-        /// Display game win screen
+        /// Start The Game
         /// </summary>
-        private void ShowGameResultScreen()
+        private void StartGame()
+        {
+            var levelData = gameConfig.Levels[m_gameData.levelIndex];
+            playHandler.Initialiaze(levelData,gameConfig.Themes[m_gameData.themeIndex].CardSpeites);
+        }
+
+        private void PlaySfx(SfxType _sfxType)
+        {
+            switch(_sfxType)
+            {
+                case SfxType.ButtonClick:
+                    audioManager.PlaySfx(gameConfig.Audios.ButtonClick);
+                    break;
+                case SfxType.CardFlip:
+                    audioManager.PlaySfx(gameConfig.Audios.CardFlip);
+                    break;
+                case SfxType.CardPaired:
+                    audioManager.PlaySfx(gameConfig.Audios.CombinationSucess);
+                    break;
+                case SfxType.CardNotPAired:
+                    audioManager.PlaySfx(gameConfig.Audios.CombinationError);
+                    break;
+                case SfxType.GameWin:
+                    audioManager.PlaySfx(gameConfig.Audios.GameWin);
+                    break;
+            }
+        }
+
+        private void SaveGameData(GameData _gameda)
         {
 
         }
