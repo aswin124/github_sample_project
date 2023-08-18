@@ -13,4 +13,34 @@ MonoBehaviour:
   m_Name: CardTheme_Coffee
   m_EditorClassIdentifier: 
   themeName: 
-  cardSprites: []
+  cardSprites:
+  - {fileID: 21300000, guid: fe72194f186d72946bd10ddc697b5f75, type: 3}
+  - {fileID: 21300000, guid: c81d72be6c85dc84ba09e07b6a4c8651, type: 3}
+  - {fileID: 21300000, guid: cf507db072bab84408bfc8e4e06bdde3, type: 3}
+  - {fileID: 21300000, guid: b079047e03b72134b86c11b8080e7dbc, type: 3}
+  - {fileID: 21300000, guid: 40426f9447a44c342a29d0ed7202f793, type: 3}
+  - {fileID: 21300000, guid: 8e200a40ec3c70148a147f87c796390d, type: 3}
+  - {fileID: 21300000, guid: ef20f9a67ea96ea4696ddb158eb5497e, type: 3}
+  - {fileID: 21300000, guid: b95c32fbc0abc1b448b6340d582cbb08, type: 3}
+  - {fileID: 21300000, guid: e09be9cb92da90e4b95c91b9be4fb5f7, type: 3}
+  - {fileID: 21300000, guid: 5494a70850fd35f4689a022321a5a382, type: 3}
+  - {fileID: 21300000, guid: 47506fc537e6ea648abd3418f548fa3b, type: 3}
+  - {fileID: 21300000, guid: cfc6b53935b36d045b8923472fbc20b9, type: 3}
+  - {fileID: 21300000, guid: 8b2e865974a0b9e4d8e6d9d93f9f793f, type: 3}
+  - {fileID: 21300000, guid: 74eb426b67409cf4c889eafa53240d74, type: 3}
+  - {fileID: 21300000, guid: 14f83294f6c19df4b94eae6712e7bf58, type: 3}
+  - {fileID: 21300000, guid: b108ae3c7c080a64681de5a274dc95d6, type: 3}
+  - {fileID: 21300000, guid: 440b222b6a574894cb2d7a0cae41134b, type: 3}
+  - {fileID: 21300000, guid: 3de746b44e524364eaeaee3a9b896c8c, type: 3}
+  - {fileID: 21300000, guid: 3f9267ed3c83b3840b6742357691952f, type: 3}
+  - {fileID: 21300000, guid: fe016fa6537fc314b8be70ed7b11b13f, type: 3}
+  - {fileID: 21300000, guid: 5f499cd6a10b3b74f912ded297143b30, type: 3}
+  - {fileID: 21300000, guid: cef4c1d0428b935439f0be9c76f48712, type: 3}
+  - {fileID: 21300000, guid: e299daf6cbdc0da4fa81f30fc628d6ce, type: 3}
+  - {fileID: 21300000, guid: 6dd3f7166eb3f8c4cb2b067cd1949b05, type: 3}
+  - {fileID: 21300000, guid: 729b31202cc59064e9865ca3db537ef4, type: 3}
+  - {fileID: 21300000, guid: 92200ed0650477f4e90d4001c400ee19, type: 3}
+  - {fileID: 21300000, guid: 0b2316db8e92c6141a6217c194de2993, type: 3}
+  - {fileID: 21300000, guid: 073ec17047ea39940af2c3e628289ac1, type: 3}
+  - {fileID: 21300000, guid: 1c49367a4dd9b154da8b14c5aeab3beb, type: 3}
+  - {fileID: 21300000, guid: c443feab0fd7e294ea953fd6adaf885a, type: 3}

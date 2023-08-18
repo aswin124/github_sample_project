@@ -20,3 +20,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1e51845883aa9d744a8a40d6325b7bd7, type: 2}
   - {fileID: 11400000, guid: ab8bdc5b22edcbf479098d820e81fc77, type: 2}
   - {fileID: 11400000, guid: ecbd7c2100999f84698081e9471f5aa8, type: 2}
+  audios: {fileID: 11400000, guid: cbc43c80bca5a2e489bb52a9c80d8109, type: 2}
+  themes:
+  - {fileID: 11400000, guid: cad6075f7fcec86409ee48d3a35d4ed7, type: 2}
+  - {fileID: 11400000, guid: 5065990ba1171b942ad0d503c2d6a263, type: 2}
