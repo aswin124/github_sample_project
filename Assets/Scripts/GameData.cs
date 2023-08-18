@@ -19,6 +19,7 @@ namespace Card
         public int noOfTurns;
         public int timeTaken;
         public bool isPreviousGameInProgress;
+        public int comboPairingCount;
 
         public GameData()
         {
@@ -29,6 +30,7 @@ namespace Card
             timeTaken = 0;
             themeIndex = 0;
             isPreviousGameInProgress = false;
+            comboPairingCount = 0;
         }
     }
 

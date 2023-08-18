@@ -59,9 +59,6 @@ namespace Card
             m_gameData = _gameData;
             m_levelData = _levelData;
             m_cardImageList = _cardImageList;
-            scoreText.text = "";
-            turnText.text = "";
-            timerText.text = "";
             UpdateUI();
             UpdateState(GamePlayState.OldGame);
         }
@@ -76,9 +73,6 @@ namespace Card
             this.gameObject.SetActive(true);
             m_levelData = _levelData;
             m_cardImageList = _cardImageList;
-            scoreText.text = "Score : 0";
-            turnText.text = "Turns : 0";
-            timerText.text = "";
             UpdateState(GamePlayState.NewGame);
         }
 
@@ -139,6 +133,10 @@ namespace Card
                 }
                 m_allCardItems.Clear();
             }
+
+            scoreText.text = "Score : 0";
+            turnText.text = "Turns : 0";
+            timerText.text = "";
 
             levelCompletedPopUp.SetActive(false);
         }
@@ -311,6 +309,9 @@ namespace Card
             UpdateState(GamePlayState.CardReveal);
         }
 
+        /// <summary>
+        /// Dynamically Calculates and update grid cell size based on parent layout size
+        /// </summary>
         private void SetGridLayout()
         {
             Vector2 cellSpacing = gridLayoutGroup.spacing;
@@ -343,6 +344,11 @@ namespace Card
                 m_flippedCardIdex.RemoveRange(0, 2);
             }
         }
+        /// <summary>
+        /// Pair the 2 selected scores and calculate the score.
+        /// </summary>
+        /// <param name="_cardIndex1"></param>
+        /// <param name="_cardIndex2"></param>
         private void PairCards(int _cardIndex1, int _cardIndex2)
         {
             m_gameData.noOfTurns++;
@@ -352,7 +358,15 @@ namespace Card
                 //Play paired Audio
                 m_gameData.allCardStatus[_cardIndex1].isPaired = true;
                 m_gameData.allCardStatus[_cardIndex2].isPaired = true;
-                m_gameData.score++;
+                m_gameData.comboPairingCount++;
+                if(m_gameData.comboPairingCount>1)
+                {
+                    m_gameData.score += m_gameData.comboPairingCount;
+                }
+                else
+                {
+                    m_gameData.score++;
+                }
                 //Save the data in local
                 SaveGameData?.Invoke(m_gameData);
                 PlaySfxAudio?.Invoke(SfxType.CardPaired);
@@ -375,6 +389,8 @@ namespace Card
                 PlaySfxAudio?.Invoke(SfxType.CardNotPAired);
                 m_allCardItems[_cardIndex1].CardPairStatus(false);
                 m_allCardItems[_cardIndex2].CardPairStatus(false);
+                m_gameData.comboPairingCount = 0;
+                SaveGameData?.Invoke(m_gameData);
                 UpdateUI();
             }
         }
@@ -382,7 +398,7 @@ namespace Card
         private void UpdateUI()
         {
             scoreText.text = "Score : " + m_gameData.score.ToString();
-            turnText.text = "Tutns : "+ m_gameData.noOfTurns.ToString();
+            turnText.text = "Turns : "+ m_gameData.noOfTurns.ToString();
         }
 
         private void OnHomeButtonClicked()
