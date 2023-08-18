@@ -18,6 +18,7 @@ namespace Card
         public int score;
         public int noOfTurns;
         public int timeTaken;
+        public bool isPreviousGameInProgress;
 
         public GameData()
         {
@@ -27,6 +28,7 @@ namespace Card
             noOfTurns = 0;
             timeTaken = 0;
             themeIndex = 0;
+            isPreviousGameInProgress = false;
         }
     }
 

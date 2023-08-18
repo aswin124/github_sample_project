@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Card
 {   
@@ -15,13 +16,19 @@ namespace Card
 
         [SerializeField] private GameObject levelItemPrefab;
         [SerializeField] private Transform levelItemParent;
+        [SerializeField] private GameObject previousGamePopUP;
+        [SerializeField] private Button menuButton;
+        [SerializeField] private Button continueButton;
 
 
         private List<LevelDataSO> m_levelDataList;
         private List<LevelItem> m_allLevelItems;
         private bool m_isInitialized;
+        private bool m_isPreviousGameInProgress;
 
         public Action<int> LevelSelected;
+        public Action<bool> ContinuePreviousButton;
+        public Action<SfxType> PlaySfxAudio;
 
         #endregion
 
@@ -29,7 +36,7 @@ namespace Card
 
         #region public Methods
 
-        public void Initialize(List<LevelDataSO> _levelDataList)
+        public void Initialize(List<LevelDataSO> _levelDataList, bool _isPreviousGameInProgress)
         {
             if (m_isInitialized)
             {
@@ -46,6 +53,7 @@ namespace Card
                 else
                 {
                     m_levelDataList = _levelDataList;
+                    m_isPreviousGameInProgress = _isPreviousGameInProgress;
                     UpdateState(MainMenuState.Initialize);
                 }
             }
@@ -61,6 +69,9 @@ namespace Card
             {
                 case MainMenuState.Initialize:
                         InitiazlizeLevelSelectionUI();
+                    break;
+                case MainMenuState.PreviousGamePopUp:
+                    ShowPreviousGamePopUp();
                     break;
                 case MainMenuState.Idle:
                     //Do  nothing, wait for the player to make selection.
@@ -95,6 +106,7 @@ namespace Card
             }
 
             m_isInitialized = true;
+            UpdateState(MainMenuState.PreviousGamePopUp);
         }
 
         /// <summary>
@@ -104,6 +116,43 @@ namespace Card
         private void OnLevelSelected(int _levelIndex)
         {
             LevelSelected?.Invoke(_levelIndex);
+        }
+
+        private void ShowPreviousGamePopUp()
+        {
+            if(m_isPreviousGameInProgress)
+            {
+                //Show Popup
+                previousGamePopUP.SetActive(true);
+
+                menuButton.onClick.RemoveAllListeners();
+                menuButton.onClick.AddListener(OnClickMenuButton);
+
+                continueButton.onClick.RemoveAllListeners();
+                continueButton.onClick.AddListener(OnClickContinueButton);
+            }
+            else
+            {
+                previousGamePopUP.SetActive(false);
+                UpdateState(MainMenuState.Idle);
+            }
+        }
+
+        private void OnClickMenuButton()
+        {
+            previousGamePopUP.SetActive(false);
+
+            //Play Audio
+            PlaySfxAudio?.Invoke(SfxType.ButtonClick);
+            ContinuePreviousButton?.Invoke(false);
+        }
+
+        private void OnClickContinueButton()
+        {
+            previousGamePopUP.SetActive(false);
+            //Play Audio
+            PlaySfxAudio?.Invoke(SfxType.ButtonClick);
+            ContinuePreviousButton?.Invoke(true);
         }
 
         #endregion

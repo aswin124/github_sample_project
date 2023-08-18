@@ -15,6 +15,7 @@ namespace Card
     {
         Initialize,
         Idle,
+        PreviousGamePopUp,
         End 
     }
 
@@ -26,6 +27,7 @@ namespace Card
         CardReveal,
         Playing,
         GameResult,
+        End,
     }
 
     public enum SfxType

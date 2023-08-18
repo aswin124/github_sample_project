@@ -20,6 +20,7 @@ namespace Card
 
         private GameState m_gameState;
         private GameData m_gameData;
+        private DataSaveLoader dataSaveLoader;
 
         #endregion
 
@@ -80,10 +81,20 @@ namespace Card
             m_gameData = new GameData();
 
             menuHandler.LevelSelected += OnGameLevelSelected;
+            menuHandler.PlaySfxAudio += PlaySfx;
+            menuHandler.ContinuePreviousButton += ContinueProressSelected;
             playHandler.PlaySfxAudio += PlaySfx;
             playHandler.SaveGameData += SaveGameData;
+            playHandler.GoBackToMenu += EndGameplayState;
             //Try to fetch the local data from memory
             //If the data  is not avilable, then initialize a new load/save class
+            dataSaveLoader = new DataSaveLoader();
+            string data = dataSaveLoader.LoadData();
+            if (string.IsNullOrEmpty(data) == false)
+            {
+                m_gameData = JsonUtility.FromJson<GameData>(data);
+            }
+            
             UpdateState(GameState.MainMenu);
         }        
 
@@ -92,7 +103,7 @@ namespace Card
         /// </summary>
         private void ShowMainMenu()
         {
-            menuHandler.Initialize(gameConfig.Levels);
+            menuHandler.Initialize(gameConfig.Levels,m_gameData.isPreviousGameInProgress);
         }
 
         /// <summary>
@@ -108,13 +119,33 @@ namespace Card
             UpdateState(GameState.GamePlay);
         }
 
+        private void ContinueProressSelected(bool _previousGame)
+        {
+            if(_previousGame)
+            {
+                UpdateState(GameState.GamePlay);
+            }
+            else
+            {
+                m_gameData.isPreviousGameInProgress = false;
+                SaveGameData(m_gameData);
+            }
+        }
+
         /// <summary>
         /// Start The Game
         /// </summary>
         private void StartGame()
         {
             var levelData = gameConfig.Levels[m_gameData.levelIndex];
-            playHandler.Initialiaze(levelData,gameConfig.Themes[m_gameData.themeIndex].CardSpeites);
+            if(m_gameData.isPreviousGameInProgress)
+            {
+                playHandler.Initialiaze(m_gameData, levelData, gameConfig.Themes[m_gameData.themeIndex].CardSpeites);
+            }
+            else
+            {
+                playHandler.Initialiaze(levelData,gameConfig.Themes[m_gameData.themeIndex].CardSpeites);
+            }
         }
 
         private void PlaySfx(SfxType _sfxType)
@@ -139,9 +170,15 @@ namespace Card
             }
         }
 
-        private void SaveGameData(GameData _gameda)
+        private void SaveGameData(GameData _gamedata)
         {
+            string data = JsonUtility.ToJson(_gamedata);
+            dataSaveLoader.SaveData(data);
+        }
 
+        private void EndGameplayState()
+        {
+            //No thing to do here
         }
 
         #endregion

@@ -22,6 +22,10 @@ namespace Card
         [SerializeField] private TextMeshProUGUI scoreText;
         [SerializeField] private TextMeshProUGUI turnText;
         [SerializeField] private TextMeshProUGUI timerText;
+        [SerializeField] private Button homeButton1;
+        [SerializeField] private GameObject levelCompletedPopUp;
+        [SerializeField] private Button retryButton;
+        [SerializeField] private Button homeButton2;
 
         private GamePlayState m_currentState;
         private LevelDataSO m_levelData;
@@ -32,6 +36,7 @@ namespace Card
 
         public Action<SfxType> PlaySfxAudio;
         public Action<GameData> SaveGameData;
+        public Action GoBackToMenu;
 
         #endregion
 
@@ -48,14 +53,16 @@ namespace Card
         /// </summary>
         /// <param name="_gameData">last game progress data</param>
         /// <param name="_cardImageList">card images</param>
-        public void Initialiaze(GameData _gameData, List<Sprite> _cardImageList)
+        public void Initialiaze(GameData _gameData, LevelDataSO _levelData , List<Sprite> _cardImageList)
         {
             this.gameObject.SetActive(true);
             m_gameData = _gameData;
+            m_levelData = _levelData;
             m_cardImageList = _cardImageList;
             scoreText.text = "";
             turnText.text = "";
             timerText.text = "";
+            UpdateUI();
             UpdateState(GamePlayState.OldGame);
         }
 
@@ -110,6 +117,10 @@ namespace Card
                     ShowGameResult();
                     break;
 
+                case GamePlayState.End:
+                    EndGamePlay();
+                    break;
+
             }
         }
 
@@ -128,6 +139,8 @@ namespace Card
                 }
                 m_allCardItems.Clear();
             }
+
+            levelCompletedPopUp.SetActive(false);
         }
 
         #region New game state related methods
@@ -139,6 +152,7 @@ namespace Card
         {
             ResetAll();
             m_gameData = new GameData();
+
             int totalNumberOfCards = m_levelData.GetTotalNumberOfCards();
             int totalNumberOfEmptyCards = m_levelData.EmptyCellIndexes.Count;
             //each image will will be placed on 2 cards
@@ -174,7 +188,8 @@ namespace Card
             }
             //Now sort the card based on cardIndex
             m_gameData.allCardStatus = m_gameData.allCardStatus.OrderBy(x => x.cardIndex).ToList();
-            //Todo need to save the data in memomory
+            m_gameData.isPreviousGameInProgress = true;
+            SaveGameData?.Invoke(m_gameData);
             //Move to next state
             UpdateState(GamePlayState.StupUI);
 
@@ -284,6 +299,16 @@ namespace Card
                 cardItem.Initialize(m_gameData.allCardStatus[i], cardImage, OnCardClicked, PlayCardFlipSfx);
                 m_allCardItems.Add(cardItem);
             }
+            //SetUp Butoon listners
+            homeButton1.onClick.RemoveAllListeners();
+            homeButton1.onClick.AddListener(OnHomeButtonClicked);
+
+            homeButton2.onClick.RemoveAllListeners();
+            homeButton2.onClick.AddListener(OnHomeButtonClicked);
+
+            retryButton.onClick.RemoveAllListeners();
+            retryButton.onClick.AddListener(OnRetryButtonClicked);
+
             UpdateState(GamePlayState.CardReveal);
         }
 
@@ -322,7 +347,9 @@ namespace Card
                 var cardStatusList = m_gameData.allCardStatus.Find(x => x.isPaired == false);
                 if(cardStatusList == null)
                 {
-                    //Allm cards  are paired.
+                    m_gameData.isPreviousGameInProgress = false;
+                    SaveGameData?.Invoke(m_gameData);
+                    //All cards  are paired.
                     UpdateState(GamePlayState.GameResult);
                 }
             }
@@ -341,11 +368,21 @@ namespace Card
             turnText.text = "Tutns : "+ m_gameData.noOfTurns.ToString();
         }
 
+        private void OnHomeButtonClicked()
+        {
+            UpdateState(GamePlayState.End);
+        }
+
+        private void OnRetryButtonClicked()
+        {
+            UpdateState(GamePlayState.NewGame);
+        }
+
         #endregion
 
         IEnumerator RevealCards()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
             for (int i = 0; i < m_allCardItems.Count; i++)
             {
                 m_allCardItems[i].RevealCard();
@@ -360,7 +397,14 @@ namespace Card
 
         private void ShowGameResult()
         {
-            
+            levelCompletedPopUp.SetActive(true);
+            PlaySfxAudio?.Invoke(SfxType.GameWin);
+        }
+
+        private void EndGamePlay()
+        {
+            GoBackToMenu?.Invoke();
+            this.gameObject.SetActive(false);
         }
 
         #endregion
