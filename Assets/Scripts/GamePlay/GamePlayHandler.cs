@@ -289,8 +289,7 @@ namespace Card
         private void SetUpUI()
         {
             //Set Grid layout
-            gridLayoutGroup.cellSize = m_levelData.CellSize;
-            gridLayoutGroup.constraintCount = m_levelData.FixedColumnCount;
+            SetGridLayout();
             //Instaantiate cards
             for (int i = 0; i < m_gameData.allCardStatus.Count; i++)
             {
@@ -310,6 +309,24 @@ namespace Card
             retryButton.onClick.AddListener(OnRetryButtonClicked);
 
             UpdateState(GamePlayState.CardReveal);
+        }
+
+        private void SetGridLayout()
+        {
+            Vector2 cellSpacing = gridLayoutGroup.spacing;
+            Rect parentRect = cardItemParent.GetComponent<RectTransform>().rect;
+            float width = parentRect.width;
+            float height = parentRect.height;
+            Vector2 cellSize = new Vector2();
+            //Calculate cell size
+            //Condise the space of both end of the panel, so the total space required will be
+            float totalSpaceOnX = (m_levelData.GridSize.x + 1) * cellSpacing.x;
+            float totalSpaceOnY = (m_levelData.GridSize.y + 1) * cellSpacing.y;
+            //Now calculate cell size
+            cellSize.x = (width - totalSpaceOnX) / m_levelData.GridSize.x;
+            cellSize.y = (height - totalSpaceOnY) / m_levelData.GridSize.y;
+            //Set Cell Size
+            gridLayoutGroup.cellSize = cellSize;
         }
 
         private void PlayCardFlipSfx()

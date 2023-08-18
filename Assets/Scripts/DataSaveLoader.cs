@@ -22,7 +22,6 @@ namespace Card
         public string LoadData()
         {
             string filePath = Application.persistentDataPath + "/Data.json";
-            Debug.LogError("FilePath => " + filePath);
             if (File.Exists(filePath) == false)
             {
                 return "";
