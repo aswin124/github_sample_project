@@ -115,6 +115,8 @@ namespace Card
         {
             //Set level index
             m_gameData.levelIndex = _levelIndex;
+            m_gameData.isPreviousGameInProgress = false;
+            SaveGameData(m_gameData);
             audioManager.PlaySfx(gameConfig.Audios.ButtonClick);
             //Move to next state
             UpdateState(GameState.GamePlay);
@@ -185,6 +187,8 @@ namespace Card
         /// <param name="_gamedata"></param>
         private void SaveGameData(GameData _gamedata)
         {
+            //Update the level index from from local game data to the passed gamedata object
+            _gamedata.levelIndex = m_gameData.levelIndex;
             string data = JsonUtility.ToJson(_gamedata);
             dataSaveLoader.SaveData(data);
         }
