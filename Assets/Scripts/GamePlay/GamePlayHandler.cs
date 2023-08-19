@@ -404,11 +404,13 @@ namespace Card
         private void OnHomeButtonClicked()
         {
             UpdateState(GamePlayState.End);
+            PlaySfxAudio?.Invoke(SfxType.ButtonClick);
         }
 
         private void OnRetryButtonClicked()
         {
             UpdateState(GamePlayState.NewGame);
+            PlaySfxAudio?.Invoke(SfxType.ButtonClick);
         }
 
         #endregion

@@ -36,6 +36,11 @@ namespace Card
 
         #region public Methods
 
+        /// <summary>
+        /// Itnitialize the Main menu
+        /// </summary>
+        /// <param name="_levelDataList"></param>
+        /// <param name="_isPreviousGameInProgress"></param>
         public void Initialize(List<LevelDataSO> _levelDataList, bool _isPreviousGameInProgress)
         {
             if (m_isInitialized)
@@ -45,7 +50,7 @@ namespace Card
             }
             else
             {
-                //Since we are not unloading the svcene, we dont need to set the UI every time
+                //Since we are not unloading the scene, we dont need to set the UI every time
                 if (_levelDataList == null || _levelDataList.Count == 0)
                 {
                     Debug.LogError("Error : Level Data is empty, check the game config SO!");
@@ -63,6 +68,10 @@ namespace Card
 
         #region Private Methods
 
+        /// <summary>
+        /// Updates the menu states
+        /// </summary>
+        /// <param name="_state"></param>
         private void UpdateState(MainMenuState _state)
         {
             switch(_state)
@@ -78,7 +87,9 @@ namespace Card
                     break;
             }
         }
-
+        /// <summary>
+        /// Creates level selection UI asper the avilable levels SO
+        /// </summary>
         private void InitiazlizeLevelSelectionUI()
         {
             //Check whether the list is empty or not, if it is not empty, 
@@ -118,6 +129,9 @@ namespace Card
             LevelSelected?.Invoke(_levelIndex);
         }
 
+        /// <summary>
+        /// Shows previous game popup to user for continue progress
+        /// </summary>
         private void ShowPreviousGamePopUp()
         {
             if(m_isPreviousGameInProgress)

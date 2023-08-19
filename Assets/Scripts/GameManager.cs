@@ -32,7 +32,7 @@ namespace Card
         {
             if(gameConfig == null)
             {
-                Debug.LogError("GameConfig is  not avvilable, please check the refrence!");
+                Debug.LogError("GameConfig is  not available, please check the refrence!");
             }
             else
             {
@@ -80,6 +80,7 @@ namespace Card
             //Intialize game data
             m_gameData = new GameData();
 
+            //REgister all event listners
             menuHandler.LevelSelected += OnGameLevelSelected;
             menuHandler.PlaySfxAudio += PlaySfx;
             menuHandler.ContinuePreviousButton += ContinueProressSelected;
@@ -119,6 +120,10 @@ namespace Card
             UpdateState(GameState.GamePlay);
         }
 
+        /// <summary>
+        /// Handles the user resposnse when the continues user progress on restart popup will be handled here
+        /// </summary>
+        /// <param name="_previousGame"></param>
         private void ContinueProressSelected(bool _previousGame)
         {
             if(_previousGame)
@@ -148,6 +153,10 @@ namespace Card
             }
         }
 
+        /// <summary>
+        /// PLay given SFX audio
+        /// </summary>
+        /// <param name="_sfxType">The audio type need to be played</param>
         private void PlaySfx(SfxType _sfxType)
         {
             switch(_sfxType)
@@ -170,6 +179,10 @@ namespace Card
             }
         }
 
+        /// <summary>
+        /// Save the data in json file
+        /// </summary>
+        /// <param name="_gamedata"></param>
         private void SaveGameData(GameData _gamedata)
         {
             string data = JsonUtility.ToJson(_gamedata);
